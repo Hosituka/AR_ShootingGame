@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Audio;
+using System;
 
 public class Gun : MonoBehaviour
 {
@@ -52,10 +53,12 @@ public class Gun : MonoBehaviour
 
     }
     //これはFireと言う名のをAnimationClipにより呼ばれる関数です。
+    int _baseRotationOfBurstFlame;
     public void OnStartShot()
     {
         _coreFlamePs.Play();
-        _burstFlamePs.transform.rotation = Quaternion.AngleAxis(Random.Range(0,3) * 15,_burstFlamePs.transform.forward);
+        _baseRotationOfBurstFlame = (int)Mathf.Repeat(_baseRotationOfBurstFlame + 1,2);
+        _burstFlamePs.transform.localRotation = Quaternion.Euler(0,0,_baseRotationOfBurstFlame * 36);
         _burstFlamePs.Play();
         _muzzleFlashLight.enabled = true;
     }
