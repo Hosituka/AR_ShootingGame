@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
     [Header("#銃に関するメンバ")]
     [SerializeField]Transform _gunsTr;
     [Header("##赤い銃に関するメンバ")]
-    [SerializeField]Gun _redGun;
+    [SerializeField]PlayerGun _redGun;
     [SerializeField]Transform _redGunTr;
     [SerializeField]Transform _redGunMuzzleTr;
     [Header("##青い銃に関するメンバ")]
-    [SerializeField]Gun _blueGun;
+    [SerializeField]PlayerGun _blueGun;
     [SerializeField]Transform _blueGunTr;
     [SerializeField]Transform _blueGunMuzzleTr;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

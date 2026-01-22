@@ -4,7 +4,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Users/sigot/Desktop/完成品/unity(Build)/AR_Shooting;C:/Users/sigot/Desktop/プログラミング/unity(Build)/AR_Shooting;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Users/sigot/Desktop/完成品/unity(Build)/AR_Shooting/test;C:/Users/sigot/Desktop/完成品/unity(Build)/AR_Shooting/webgl;C:/Users/sigot/Desktop/完成品/unity(Build)/AR_Shooting;C:/Users/sigot/Desktop/プログラミング/unity(Build)/AR_Shooting;;;;;;\"}"
             }
         ]
     }

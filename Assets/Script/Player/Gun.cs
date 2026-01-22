@@ -1,16 +1,18 @@
 using UnityEngine;
 using System.Collections;
 using Audio;
-using System;
 
-public class Gun : MonoBehaviour
+public class PlayerGun : MonoBehaviour
 {
+    public Light SingleMuzzleFlashLight;
     [SerializeField]Transform _muzzleTr;
     [SerializeField]GameObject _bullet;
     [SerializeField]Animator _animator;
     [SerializeField]ParticleSystem _coreFlamePs;
     [SerializeField]ParticleSystem _burstFlamePs;
-    [SerializeField]Light _muzzleFlashLight;
+    [SerializeField]ParticleSystem _shellEjectPs;
+    [SerializeField]Light _dualMuzzleFlashLight;
+    [SerializeField]PlayerGun _partnerGun;
     RaycastHit _raycastHit;
     bool _isShot;
     
@@ -54,17 +56,44 @@ public class Gun : MonoBehaviour
     }
     //これはFireと言う名のをAnimationClipにより呼ばれる関数です。
     int _baseRotationOfBurstFlame;
+    static int _playingShotAnim;
     public void OnStartShot()
     {
+        _playingShotAnim ++;
         _coreFlamePs.Play();
         _baseRotationOfBurstFlame = (int)Mathf.Repeat(_baseRotationOfBurstFlame + 1,2);
         _burstFlamePs.transform.localRotation = Quaternion.Euler(0,0,_baseRotationOfBurstFlame * 36);
         _burstFlamePs.Play();
-        _muzzleFlashLight.enabled = true;
+        switch (_playingShotAnim)
+        {
+            case 1:
+                SingleMuzzleFlashLight.enabled = true;
+            break;
+            case 2:
+                _partnerGun.SingleMuzzleFlashLight.enabled = false;
+                _dualMuzzleFlashLight.enabled = true;
+            break;
+        }        
+    }
+    //これはFireと言う名のAnimationClipにより呼ばれる関数です。
+    public void OnOpenChamber()
+    {
+        _shellEjectPs.Play();
     }
     //これはFireと言う名のAnimationClipにより呼ばれる関数です。
     public void OnEndShot()
     {
-        _muzzleFlashLight.enabled = false;
+        _playingShotAnim --;
+        switch (_playingShotAnim)
+        {
+            case 1:
+                _dualMuzzleFlashLight.enabled = false;
+                _partnerGun.SingleMuzzleFlashLight.enabled = true;
+            break;
+            case 0:
+               SingleMuzzleFlashLight.enabled = false;
+            break;
+        }        
+
     }
 }
