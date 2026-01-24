@@ -1,7 +1,6 @@
 
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using AttitudeSensor = UnityEngine.InputSystem.AttitudeSensor;
@@ -29,7 +28,7 @@ public class Title1UI_Manager : MonoBehaviour
 
 
     [Header("WebCamSettingUI")]
-    [SerializeField]WebCameraImage _webCameraImage;
+    [SerializeField]ShowWebCamera _showWebCamera;
     [SerializeField]TextMeshProUGUI _webCumNumberText;
 
     [SerializeField]GameObject _changeWebCamsObj ;  
@@ -58,7 +57,7 @@ public class Title1UI_Manager : MonoBehaviour
         }
 
     }
-    public void StartAR_Game()
+    public void StartAR_GameButton()
     {
         StartCoroutine(Main());
         IEnumerator Main()
@@ -92,7 +91,7 @@ public class Title1UI_Manager : MonoBehaviour
                 currentWebCamIndex = (int)Mathf.Repeat(1, WebCamTexture.devices.Length);
                 GameManager.Current.WebCamTexture = new WebCamTexture(WebCamTexture.devices[currentWebCamIndex].name);
                 GameManager.Current.CurrentWebCamIndex = currentWebCamIndex;
-                _webCameraImage.SetWebCamTexture();
+                _showWebCamera.StartShowWebCam();
 
                 _notifierTextToUser.text = "背面カメラを検出出来ず、代わりに<br>１のカメラを表示しました。背面<br>カメラでないなら変更を押してください";
                 _getWebCamButtonObj.SetActive(false);
@@ -126,7 +125,7 @@ public class Title1UI_Manager : MonoBehaviour
             Destroy(GameManager.Current.WebCamTexture);
         }
         GameManager.Current.WebCamTexture = new WebCamTexture(WebCamTexture.devices[currentWebCamIndex].name, Screen.width, Screen.height, 30);
-        _webCameraImage.SetWebCamTexture();
+        _showWebCamera.StartShowWebCam();
         _webCumNumberText.text = GameManager.Current.CurrentWebCamIndex.ToString();
         GameManager.Current.CurrentWebCamIndex = currentWebCamIndex;
         _notifierTextToUser.text = "";
