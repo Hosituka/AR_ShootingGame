@@ -1927,6 +1927,10 @@ PrefabInstance:
       propertyPath: m_Shadows.m_Type
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2900435465325158671, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3221678509023341805, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2031,6 +2035,18 @@ PrefabInstance:
       propertyPath: m_RenderAlignment
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4225667004338859756, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
+      propertyPath: RotationModule.x.minScalar
+      value: 8.377581
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225667004338859756, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
+      propertyPath: RotationModule.y.minScalar
+      value: 8.377581
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225667004338859756, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
+      propertyPath: RotationModule.curve.minScalar
+      value: 8.377581
+      objectReference: {fileID: 0}
     - target: {fileID: 4613625652119506517, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2083,6 +2099,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: edaf56b07ecfcc4408acabbbdef372a4, type: 2}
+    - target: {fileID: 5851193199098370039, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
+      propertyPath: m_Name
+      value: frontLight
+      objectReference: {fileID: 0}
     - target: {fileID: 6470430249299164594, guid: 6668cfc03ed6aff43acfd981ef358f4a, type: 3}
       propertyPath: m_Controller
       value: 

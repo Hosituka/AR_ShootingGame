@@ -1,9 +1,9 @@
 using UnityEngine;
 using Audio;
 
-public class Title2UI_Manager : MonoBehaviour
+public class TitleUI_Manager : MonoBehaviour
 {
-    public static Title2UI_Manager current;
+    public static TitleUI_Manager current;
     void Awake()
     {
         if (current == null)

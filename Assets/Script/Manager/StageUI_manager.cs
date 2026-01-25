@@ -174,6 +174,18 @@ public class StageUI_manager : MonoBehaviour
         SoundManager.Current.PlayOneShot2D_SE(OneShot.downButton,0.7f);
         Time.timeScale = 1;
     }
+    public void RestartShootableButton()
+    {
+        GameManager.Current.ReloadCurrentScene();
+    }
+    public void GoBackTitleShootableButton()
+    {
+        GameManager.Current.LoadTitle2();
+    }
+    public void LoadStageShootableButton(string stageName)
+    {
+        GameManager.Current.LoadScene(stageName);
+    }
 
 }
     public enum TimingState

@@ -322,7 +322,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4504791940206654529}
         m_TargetAssemblyTypeName: StageUI_manager, Assembly-CSharp
-        m_MethodName: RestartButton
+        m_MethodName: RestartShootableButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19515,7 +19515,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4504791940206654529}
         m_TargetAssemblyTypeName: StageUI_manager, Assembly-CSharp
-        m_MethodName: GoBackTitle2Button
+        m_MethodName: GoBackTitleShootableButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21282,7 +21282,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4504791940206654529}
         m_TargetAssemblyTypeName: StageUI_manager, Assembly-CSharp
-        m_MethodName: LoadStageButton
+        m_MethodName: LoadStageShootableButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
