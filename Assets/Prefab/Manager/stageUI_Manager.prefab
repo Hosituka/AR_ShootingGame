@@ -9408,7 +9408,7 @@ GameObject:
   - component: {fileID: 2207355179530085354}
   - component: {fileID: 6911074245675983948}
   m_Layer: 6
-  m_Name: ShowWebCam
+  m_Name: AR_BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17770,7 +17770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d0ddbb93d0940642afacfa901fd6a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showWebCamera: {fileID: 6911074245675983948}
+  _aR_BackGround: {fileID: 6911074245675983948}
   _indicatorToTarget: {fileID: 7162041652663342731}
   _indicatorsUIObj: {fileID: 5885526588230782050}
   _timeTextTM: {fileID: 4021180547454116141}
@@ -19256,7 +19256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8359988442674162717}
   m_Layer: 6
-  m_Name: webCamCamera
+  m_Name: AR_BackGroundUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

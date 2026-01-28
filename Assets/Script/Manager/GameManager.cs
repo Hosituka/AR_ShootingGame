@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Slider _sceneLoadProgressSlider;
 
     [System.NonSerialized]public bool StopWebCam;
-    [System.NonSerialized]public Quaternion InitialAttitudeValueOffset;
-    [System.NonSerialized]public Quaternion CurrentAttitudeValue;
+    [System.NonSerialized]public Quaternion InitialAttitudeValueOffset = Quaternion.identity;
+    [System.NonSerialized]public Quaternion CurrentAttitudeValue = Quaternion.identity;
 
     public enum Difficult
     {
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
     }
-    public void LoadTitle2()
+    public void LoadTitle()
     {
         LoadScene("title");
         Time.timeScale = 1;

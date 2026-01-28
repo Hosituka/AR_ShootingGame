@@ -15,11 +15,11 @@ public class TitleUI_Manager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    [SerializeField]ShowWebCamera _showWebCamera;
+    [SerializeField]AR_BackGround _aR_BackGround;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _showWebCamera.StartShowWebCam();
+        _aR_BackGround.StartShowWebCam();
         GameManager.Current.StartFadeIn();
     }
 

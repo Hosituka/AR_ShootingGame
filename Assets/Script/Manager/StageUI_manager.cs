@@ -18,7 +18,7 @@ public class StageUI_manager : MonoBehaviour
         }
     }
     [Header("#通常のUIに関するメンバ")]
-    [SerializeField]ShowWebCamera _showWebCamera;
+    [SerializeField]AR_BackGround _aR_BackGround;
     [SerializeField] GameObject _indicatorToTarget;
     [SerializeField] GameObject _indicatorsUIObj;
     [SerializeField] TextMeshProUGUI _timeTextTM;
@@ -50,7 +50,7 @@ public class StageUI_manager : MonoBehaviour
 
     void Start()
     {
-        _showWebCamera.StartShowWebCam();
+        _aR_BackGround.StartShowWebCam();
         GameManager.Current.StartFadeIn();
         _gameClearUIObj.SetActive(false);
         _indicatorToClear.SetActive(false);
@@ -151,7 +151,7 @@ public class StageUI_manager : MonoBehaviour
     public void GoBackTitle2Button()
     {
         SoundManager.Current.PlayOneShot2D_SE(OneShot.downButton,0.7f);
-        GameManager.Current.LoadTitle2();
+        GameManager.Current.LoadTitle();
     }
     public void LoadStageButton(string stageName)
     {
@@ -180,7 +180,7 @@ public class StageUI_manager : MonoBehaviour
     }
     public void GoBackTitleShootableButton()
     {
-        GameManager.Current.LoadTitle2();
+        GameManager.Current.LoadTitle();
     }
     public void LoadStageShootableButton(string stageName)
     {

@@ -1,6 +1,8 @@
 
+using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -20,53 +22,50 @@ public class AR_SetUpUI_Manager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    [Header("Title1UI")]
-    
-    [SerializeField]GameObject _startAR_GameButtonObj;
-    [SerializeField]GameObject _loadTitle2ButtonObj;
+    [Header("#AR_SetUpUI")]
+    [SerializeField]GameObject _startBackCamButtonObj;
+    [SerializeField]GameObject _startAttitudeSensorButtonObj;
 
     [SerializeField]TextMeshProUGUI _notifierTextToUser;
 
 
-    [Header("WebCamSettingUI")]
-    [SerializeField]ShowWebCamera _showWebCamera;
+    [SerializeField]AR_BackGround _aR_BackGround;
+    [Header("##ManualCameraSelectorUI")]
+    [SerializeField]GameObject _manualCameraSelectorUI_Obj;
+
     [SerializeField]TextMeshProUGUI _webCumNumberText;
 
-    [SerializeField]GameObject _changeWebCamsObj ;  
 
-    [SerializeField]phase _currentPhase;
+    phase _currentPhase;
     enum phase
     {
         idle,
         waitingForWebCameraPermission,
-        enablingAttitudeSensor,
         waitingForVertical,
         gettingWebCamTexOfBackCamera,
+
+        waitingForAttitudeSensorPermission,
         completed 
     }
-    Coroutine _currentSetUpAR;
+    Coroutine _currentSetUpBackCam;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public void StartAR_GameButton()
+    //ユーザの一回目のボタンクリックによって呼ばれる関数。
+    public void StartBackCamButton()
     {
         //一度しかコールチンが走らないようにする。
-        if(_currentSetUpAR != null) return;
-        _startAR_GameButtonObj.GetComponent<Button>().enabled = false;
-        _currentSetUpAR = StartCoroutine(SetUpAR());
-        IEnumerator SetUpAR()
+        if(_currentSetUpBackCam != null) return;
+        _startBackCamButtonObj.GetComponent<Button>().enabled = false;
+        _currentSetUpBackCam = StartCoroutine(SetUpBackCam());
+        IEnumerator SetUpBackCam()
         {
             _currentPhase = phase.waitingForWebCameraPermission;
             StartCoroutine(GetForWebCameraPermission());
             yield return new WaitWhile(()=>_currentPhase == phase.waitingForWebCameraPermission);
-            StartCoroutine(EnableAttitudeSensor());
-            yield return new WaitWhile(() => _currentPhase == phase.enablingAttitudeSensor);
             StartCoroutine(RequestVerticalOrientation());
             yield return new WaitWhile(() => _currentPhase == phase.waitingForVertical);
             StartCoroutine(GetWebCamTexOfBackCamera());
             yield return new WaitWhile(() => _currentPhase == phase.gettingWebCamTexOfBackCamera);
-            GameManager.Current.ResetRotation();
-            GameManager.Current.LoadTitle2();
-
 
         }
         IEnumerator GetForWebCameraPermission()
@@ -77,30 +76,8 @@ public class AR_SetUpUI_Manager : MonoBehaviour
                 yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
                 _notifierTextToUser.text = "";
             }
-            _currentPhase = phase.enablingAttitudeSensor;
+            _currentPhase = phase.waitingForVertical;
 
-        }
-        IEnumerator EnableAttitudeSensor()
-        {
-            if (GameManager.Current.IsRunningInEditor){
-                _currentPhase = phase.waitingForVertical;
-                yield break;
-            }
-            
-            if(AttitudeSensor.current != null)
-            {
-                _notifierTextToUser.text = "姿勢センサーへのアクセス許可してください。";
-                InputSystem.EnableDevice(AttitudeSensor.current);
-                yield return new WaitWhile(() => AttitudeSensor.current.enabled == false);
-                _notifierTextToUser.text = "姿勢センサーを有効化しています。";
-                yield return new WaitForSecondsRealtime(1f);
-                _currentPhase = phase.waitingForVertical;
-
-            }
-            else
-            {
-                _notifierTextToUser.text = "姿勢センサーを検出できませんでした。";
-            }
         }
         IEnumerator RequestVerticalOrientation()
         {
@@ -144,37 +121,77 @@ public class AR_SetUpUI_Manager : MonoBehaviour
                 currentWebCamIndex = (int)Mathf.Repeat(1, WebCamTexture.devices.Length);
                 GameManager.Current.WebCamTexture = new WebCamTexture(WebCamTexture.devices[currentWebCamIndex].name);
                 GameManager.Current.CurrentWebCamIndex = currentWebCamIndex;
-                _showWebCamera.StartShowWebCam();
+                _aR_BackGround.StartShowWebCam();
 
-                _notifierTextToUser.text = "背面カメラを検出出来ず、代わりに<br>１のカメラを表示しました。背面<br>カメラでないなら変更を押してください";
-                _startAR_GameButtonObj.SetActive(false);
-                _loadTitle2ButtonObj.SetActive(true);
-                _changeWebCamsObj.SetActive(true);
+                _notifierTextToUser.text = "背面カメラの取得に失敗、その代わりに<br>１のカメラを表示しました。背面<br>カメラでないなら変更を押してください";
+                _startBackCamButtonObj.SetActive(false);
+                _manualCameraSelectorUI_Obj.SetActive(true);
             }//背面カメラを検出できた時
             else
             {
-                _notifierTextToUser.text = "背面カメラの取得に成功、ゲームを開始します";
+                _notifierTextToUser.text = "背面カメラの取得に成功";
                 yield return new WaitForSeconds(1f);
-                _currentPhase = phase.completed;
+                _currentPhase = phase.waitingForAttitudeSensorPermission;
+                _notifierTextToUser.text = "";
+                _startBackCamButtonObj.SetActive(false);
+                _startAttitudeSensorButtonObj.SetActive(true);
 
             }
 
         }
     }
-    //ここから下の関数はuiのボタンにより呼ばれる関数であり、目的は背面カメラを自動検出できなかったとき、手動で設定するための場所です。
-    public void LoadTitle2Button()
+    //ユーザの二回目のボタンクリックによって呼ばれる関数。
+    bool _isStartAttitudeSensor;
+    public void StartAttitudeSensorButton()
     {
-        StartCoroutine(OneShot());
-        IEnumerator OneShot()
+        if(_isStartAttitudeSensor) return;
+        _isStartAttitudeSensor = true;
+        StartAttitudeSensor();
+    }
+    void StartAttitudeSensor()
+    {    
+        if (GameManager.Current.IsRunningInEditor){
+            StartGame();
+            return;
+        }    
+        if(AttitudeSensor.current == null)
         {
-            _notifierTextToUser.text = "これを背面カメラとして扱い、ゲームを開始します。";
-            yield return new WaitForSeconds(2f);
-            _currentPhase = phase.completed;
-  
+            _notifierTextToUser.text = "姿勢センサーを検出できませんでした。";
+            return;
         }
+
+
+        InputSystem.EnableDevice(AttitudeSensor.current);
+        StartCoroutine(WaitForAttitudeSensorEnable());
+        IEnumerator WaitForAttitudeSensorEnable()
+        {
+            yield return new WaitWhile(()=>GameManager.Current.CurrentAttitudeValue == Quaternion.identity);
+            _notifierTextToUser.text = "必要な準備が完了。ゲームを開始します。";
+            yield return new WaitForSecondsRealtime(1f);
+            StartGame();
+        }
+
+        void StartGame()
+        {
+            _currentPhase = phase.completed;
+            GameManager.Current.ResetRotation();
+            GameManager.Current.LoadTitle();
+        }
+
+    }
+    //#ここから下はGetWebCamTexOfBackCamera()が上手く背面カメラを検出できなかったとき、手動で設定するために呼ばれる関数群です。
+    //##背面カメラを確定すると同時に、姿勢センサーのパーミッション許可を出す。
+    public void ConfirmBackCameraButton()
+    {
+        if(_isStartAttitudeSensor) return;
+        _isStartAttitudeSensor = true;
+        _notifierTextToUser.text = "次に姿勢センサーを有効化します。";
+        _manualCameraSelectorUI_Obj.SetActive(false);
+        _currentPhase = phase.waitingForAttitudeSensorPermission;
+        StartAttitudeSensor();
     }
 
-
+    //##webカメラの変更をする処理
     public void ChangeWebCamIndexButton()
     {
         int currentWebCamIndex = GameManager.Current.CurrentWebCamIndex;
@@ -186,7 +203,7 @@ public class AR_SetUpUI_Manager : MonoBehaviour
             Destroy(GameManager.Current.WebCamTexture);
         }
         GameManager.Current.WebCamTexture = new WebCamTexture(WebCamTexture.devices[currentWebCamIndex].name, Screen.width, Screen.height, 30);
-        _showWebCamera.StartShowWebCam();
+        _aR_BackGround.StartShowWebCam();
         _webCumNumberText.text = GameManager.Current.CurrentWebCamIndex.ToString();
         GameManager.Current.CurrentWebCamIndex = currentWebCamIndex;
         _notifierTextToUser.text = "";
