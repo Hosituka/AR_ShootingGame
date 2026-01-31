@@ -17,7 +17,7 @@ public class MoveRedTarget : PointObject
     float _startGeneratePitch;
     float _pingPongTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override (float nextActivationDelay,float lifeTime) Initialize()
+    public override (float nextBaseActivationDelay,float lifeTime) Initialize()
     {
         _playerTr = Player.Current.GetComponent<Transform>();
         _isVerticalToRotate = Random.Range(0, 2) == 1;
@@ -34,7 +34,6 @@ public class MoveRedTarget : PointObject
         {
             _pingPongTime = 1 * IntervalForMove / 2;
         }
-        ActivateMain();
         return (FourthNote,FourthNote * 5);
     }
     public override void TimeOver()
@@ -45,9 +44,10 @@ public class MoveRedTarget : PointObject
     // Update is called once per frame
     void Update()
     {
-        if(TargetTimeKeeper.CurrentTargetState == TimeKeeper.TargetState.Activating) return;
-        _pingPongTime += Time.deltaTime;
+        if(TargetTimeKeeper == null)return;
+        if(TargetTimeKeeper.CurrentTargetState != TimeKeeper.TargetState.ActivationCompleted) return;
 
+        _pingPongTime += Time.deltaTime;
         if (_isVerticalToRotate)//ローカル座標系のy軸方向にRotateAroundさせる
         {
             _remapPingPong = Mathf.PingPong(_pingPongTime / IntervalForMove, 1) * 2 - 1; 

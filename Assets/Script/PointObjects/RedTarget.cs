@@ -7,7 +7,7 @@ public class RedTarget : PointObject
     [Header("RedTargetの設定用プロパティ")]
     [SerializeField]bool _isDestruction;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override (float nextActivationDelay,float lifeTime) Initialize()
+    public override (float nextBaseActivationDelay,float lifeTime) Initialize()
     {
         ActivateMain();
         return (FourthNote,FourthNote * 5);

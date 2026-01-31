@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: Bpm
-      value: 60
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: bpm
@@ -645,7 +645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: GenerateHalfYawAngle
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: difficultAsGenerater
@@ -653,7 +653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: GenerateHalfPitchAngle
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: easyMaxPointObjectCost

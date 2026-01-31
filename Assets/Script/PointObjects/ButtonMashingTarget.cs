@@ -11,7 +11,7 @@ public class ButtonMashingTarget : PointObject
     public TextMeshPro NeedShotCountText;
     [SerializeField]bool _isDestruction;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override (float nextActivationDelay,float lifeTime) Initialize()
+    public override (float nextBaseActivationDelay,float lifeTime) Initialize()
     {
         Hp = Random.Range(MinHp, MaxHp);
         NeedShotCountText.text = Hp.ToString();

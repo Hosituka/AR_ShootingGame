@@ -41,7 +41,7 @@ public class PointObjectGenerater2 : MonoBehaviour
     public static PointObjectGenerater2 CurrentPointObjectGenerater2;
     public (int x, int y) PointObjectMapLength;
 
-    float _currentActivationDelay;
+    float _currentBaseActivationDelay;
     bool[,] _pointObjectMap;
 
 
@@ -83,7 +83,7 @@ public class PointObjectGenerater2 : MonoBehaviour
         IEnumerator OneShot()
         {
             yield return new WaitForSeconds(delay);            
-            _currentActivationDelay = nextActivationDelay;
+            _currentBaseActivationDelay = nextActivationDelay;
             PerlinNoiseMagni = perlinNoiseMagni;
             _perlinNoiseSeed += Random.Range(0f,1f) * PerlinNoiseScale * PerlinNoiseMagni;
             _generatableCount = maxGeneratableCount;
@@ -131,9 +131,10 @@ public class PointObjectGenerater2 : MonoBehaviour
             PointObject currentPointObject = currentPointObjectObj.GetComponent<PointObject>();
             currentPointObject.PointObjectPos = new Vector2(pointObjectPos.x, pointObjectPos.y);
             currentPointObject.TargetIndicator2 = StageUI_manager.Current.GenerateIndicatorToTarget(currentPointObjectObj.transform);
+            currentPointObject.TargetTimeKeeper = currentTimeKeeper;
             currentTimeKeeper.TargetPointObjectList.Add(currentPointObject);
             
-            currentTimeKeeper.ActivationDelay = _currentActivationDelay;
+            currentTimeKeeper.BaseActivationDelay = _currentBaseActivationDelay;
 
             generatedCount++;
         }

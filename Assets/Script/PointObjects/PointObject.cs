@@ -7,12 +7,14 @@ using UnityEngine;
 public abstract class PointObject : MonoBehaviour
 {
     [Header("PointObjectの設定用プロパティ")]
-    //このリストの0番地はPointObjectの具象クラスのインスタンスが持つと言えるTMPやMRのリストが入る。
     public List<TMPandMeshRenderer> FadeTargetList;
     public List<Collider> ColliderList;
     public GameObject MainObj;
     public float PointObjectCost;
-    public int nextGeneratableCount;
+    //次のpointobjectを生成する時、同時に生成される個数
+    public int NextGeneratableCount = 1;
+    //このフィールドを持つインスタンスの有効化に必要な時間のoffset
+    public float OffsetActivationDelay{get;protected set;}
     public MeshRenderer LifeTimeGUI_MR;
     [SerializeField]protected BreakAnimator _targetBreakAnimator;
     [Header("表示用")]
@@ -32,13 +34,13 @@ public abstract class PointObject : MonoBehaviour
 
     
 
-    public abstract (float nextActivationDelay,float lifeTime) Initialize();
+    public abstract (float nextBaseActivationDelay,float lifeTime) Initialize();
     public abstract void TimeOver();
     public void PlayActivateAnim(float activateAnimDuration)
     {
         float playBackActiveAnimTime = 0;
-        StartCoroutine(Anim());
-        IEnumerator Anim()
+        StartCoroutine(ActivateAnim());
+        IEnumerator ActivateAnim()
         {
             while(playBackActiveAnimTime < activateAnimDuration)
             {
@@ -83,34 +85,40 @@ public abstract class PointObject : MonoBehaviour
         }
 
     }
-    public IEnumerator SubtractLifeTimeGUI_Anim(float duration){
-        MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
-        for(float playback = 0;playback < duration; playback += Time.deltaTime)
-        {
-            propBlock.SetFloat("_outerFrameAnim",1 - playback / duration);
-            if(LifeTimeGUI_MR == null) yield break;
-            if(TargetIndicator2 == null) yield break;
-            TargetIndicator2.SetLifeTimeAnim(1 - playback / duration,Color.white,Color.black);
-            LifeTimeGUI_MR.SetPropertyBlock(propBlock);
-            yield return null;
+    public void PlaySubtractLifeTimeGUI(float duration)
+    {
+        StartCoroutine(SubtractLifeTimeGUI());
+        IEnumerator SubtractLifeTimeGUI(){
+            MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
+            for(float playback = 0;playback < duration; playback += Time.deltaTime)
+            {
+                if(TargetTimeKeeper == null) yield break;
+                propBlock.SetFloat("_outerFrameAnim",1 - playback / duration);
+                TargetIndicator2.SetLifeTimeAnim(1 - playback / duration,Color.white,Color.black);
+                LifeTimeGUI_MR.SetPropertyBlock(propBlock);
+                yield return null;
+            }
         }
     }
-    public IEnumerator AddLifeTimeGUI_Anim(float duration){
-        MainObj.SetActive(false);
-
-        MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
-        for(float playback = 0;playback < duration;playback += Time.deltaTime)
-        {
-            propBlock.SetFloat("_outerFrameAnim",playback / duration);
-            if(LifeTimeGUI_MR == null) yield break;
-            //shadergraphで作ったshader側の都合で、Color.blackを第二引数に設定する時は、微小な量を足してください。
-            TargetIndicator2.SetLifeTimeAnim(playback / duration,Color.black + new Color(0.04f,0.04f,0.04f),Color.white);
-            LifeTimeGUI_MR.SetPropertyBlock(propBlock);
-            yield return null;
+    public void PlayAddLifeTimeGUI(float duration)
+    {
+        StartCoroutine(AddLifeTimeGUI());
+        IEnumerator AddLifeTimeGUI(){
+            MainObj.SetActive(false);
+            MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
+            for(float playback = 0;playback < duration;playback += Time.deltaTime)
+            {
+                if(TargetTimeKeeper == null) yield break;
+                propBlock.SetFloat("_outerFrameAnim",playback / duration);
+                Debug.Log("unnko2");
+                //shadergraphで作ったshader側の都合で、Color.blackを第二引数に設定する時は、微小な量を足してください。
+                TargetIndicator2.SetLifeTimeAnim(playback / duration,Color.black + new Color(0.04f,0.04f,0.04f),Color.white);
+                LifeTimeGUI_MR.SetPropertyBlock(propBlock);
+                yield return null;
+            }
         }
     }
-    abstract protected IEnumerator BreakCoroutine();
-    protected void ActivateMain()
+    public void ActivateMain()
     {
         MainObj.SetActive(true);
         this.enabled = true;
@@ -122,6 +130,8 @@ public abstract class PointObject : MonoBehaviour
         }
         //DebugPointObjectPos = PointObjectGenerater2.pointObjectGenerater2.pointObjectWorldPosToPointObjectPos(transform.position);
     }
+
+    abstract protected IEnumerator BreakCoroutine();
 
 }
 [Serializable]

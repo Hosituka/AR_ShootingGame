@@ -10,7 +10,8 @@ public class BluePlaneForLineUp : PlaneForLineUp
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Dot(transform.right, LineUpTargetTr.right) > 0)
+        _dot = Vector3.Dot(transform.right, LineUpTargetTr.right);
+        if (_dot > 0 + 0.001)
         {
             if (_isShow == true) return;
             _isShow = true;
@@ -39,18 +40,14 @@ public class BluePlaneForLineUp : PlaneForLineUp
         else if(collision.gameObject.CompareTag("BlueBullet"))
         {
             StageManager.Current.AddCombo();
-            switch (Line_UpTarget.TargetTimeKeeper.CurrentTaimingState)
-            {
-                case TimingState.GoodTiming:
-                StageManager.Current.AddScore(0.4f,TimingState.GoodTiming);
-                break;
-                case TimingState.GreatTiming:
-                StageManager.Current.AddScore(0.7f,TimingState.GreatTiming);
-                break;
-                case TimingState.PerfectTiming:
-                StageManager.Current.AddScore(1f,TimingState.PerfectTiming);
-                break;
-            }
+            
+            if(_dot >= 0.95f)
+            {StageManager.Current.AddScore(1f,TimingState.PerfectTiming);}
+            else if(_dot >= 0.8f)
+            {StageManager.Current.AddScore(0.7f,TimingState.GreatTiming);}
+            else
+            {StageManager.Current.AddScore(0.4f,TimingState.GoodTiming);}
+
             StartCoroutine(BreakCoroutine());
         }
     }

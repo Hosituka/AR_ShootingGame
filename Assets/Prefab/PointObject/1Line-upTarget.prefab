@@ -686,7 +686,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 11, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 12, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3105128837219875812}
@@ -1364,7 +1364,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 5.25, y: -0, z: 0}
-  m_LocalScale: {x: 11, y: 0.5, z: 2}
+  m_LocalScale: {x: 12, y: 0.5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3888164334054432250}
@@ -2259,7 +2259,8 @@ MonoBehaviour:
   ColliderList: []
   MainObj: {fileID: 5608414479450518256}
   PointObjectCost: 4
-  nextGeneratableCount: 1
+  NextGeneratableCount: 1
+  <OffsetActivationDelay>k__BackingField: 2
   LifeTimeGUI_MR: {fileID: 1628520991079213297}
   _targetBreakAnimator: {fileID: 4994112954404491780}
   PointObjectPos: {x: 0, y: 0}
@@ -2273,9 +2274,9 @@ MonoBehaviour:
   - {fileID: 3263126336053259590}
   - {fileID: 449292797481536101}
   AxisTr: {fileID: 3105128837219875812}
-  MaxPlaneCount: 6
-  MinPlaneCount: 5
-  _nextShowPlaneInterval: 0
+  MaxPlaneCount: 4
+  MinPlaneCount: 4
+  _nextShowPlaneInterval: 1
   _setPlanes: []
   _planeCount: 0
 --- !u!114 &4994112954404491780

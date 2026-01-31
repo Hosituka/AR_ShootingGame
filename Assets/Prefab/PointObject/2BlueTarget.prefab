@@ -435,7 +435,8 @@ MonoBehaviour:
   - {fileID: 3153822431969660074}
   MainObj: {fileID: 7848461985884779351}
   PointObjectCost: 1
-  nextGeneratableCount: 2
+  NextGeneratableCount: 2
+  OffsetActivationDelay: 0
   LifeTimeGUI_MR: {fileID: 8976815972985193884}
   _targetBreakAnimator: {fileID: 8476748975805284806}
   PointObjectPos: {x: 0, y: 0}
@@ -444,7 +445,7 @@ MonoBehaviour:
   NormalizePointObjectPosAsCenter: {x: 0, y: 0}
   TargetTimeKeeper: {fileID: 0}
   TargetIndicator2: {fileID: 0}
-  Test: 0
+  _isDestruction: 0
 --- !u!114 &8476748975805284806
 MonoBehaviour:
   m_ObjectHideFlags: 0

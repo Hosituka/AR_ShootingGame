@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using NUnit.Framework;
 
 public class LineUpTarget : PointObject
 {
@@ -21,7 +23,7 @@ public class LineUpTarget : PointObject
     GameObject _generatedPlaneObj;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override (float nextActivationDelay,float lifeTime) Initialize()
+    public override (float nextBaseActivationDelay,float lifeTime) Initialize()
     {
         _planeCount = Random.Range(MinPlaneCount, MaxPlaneCount + 1);
         PlaneForLineUp instancePlaneForLineUp;
@@ -43,8 +45,21 @@ public class LineUpTarget : PointObject
             _generatedPlaneObj.SetActive(true);
             _setPlanes[generatedCount] = _generatedPlaneObj;
         }
-        _nextShowPlaneInterval = FourthNote * 1f;
-        ActivateMain();
+        switch (GameManager.Current.CurrentDifficult)
+        {
+            case GameManager.Difficult.easy:
+            _nextShowPlaneInterval = FourthNote;
+            OffsetActivationDelay = FourthNote * 2;
+            break;
+            case GameManager.Difficult.normal:
+            _nextShowPlaneInterval = FourthNote;
+            OffsetActivationDelay = FourthNote * 2;
+            break;
+            case GameManager.Difficult.hard:
+            _nextShowPlaneInterval = FourthNote + EighthNote;
+            OffsetActivationDelay = FourthNote * 2;
+            break;
+        }
         SetRotationInterval();
         return (_nextShowPlaneInterval * _planeCount,
                _nextShowPlaneInterval * _planeCount * 2);
@@ -57,6 +72,7 @@ public class LineUpTarget : PointObject
     // Update is called once per frame
     void Update()
     {
+        if(TargetTimeKeeper == null)return;
         if(TargetTimeKeeper.CurrentTargetState == TimeKeeper.TargetState.Activating) return;
         AxisTr.rotation = Quaternion.AngleAxis(1 / _rotationInterval * Time.deltaTime * 360, transform.up) * AxisTr.rotation;
     }

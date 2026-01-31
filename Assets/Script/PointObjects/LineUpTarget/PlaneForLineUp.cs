@@ -13,6 +13,7 @@ public abstract class PlaneForLineUp : MonoBehaviour
     [SerializeField]protected BreakAnimator _targetBreakAnimator;
     [SerializeField]protected Transform _effectPivotTr;
     protected bool _isShow = true;
+    protected float _dot;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     abstract protected IEnumerator BreakCoroutine();
 

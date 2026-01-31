@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 
+//ある時刻におけるpointObject群のライフサイクルを管理するクラスである。pointObjectGeneraterとの連携も行っている。
 public class TimeKeeper : MonoBehaviour
 {
-    //ここはPointObjectのアクティブアニメーションや、デスポーンアニメーションの管理を行っているクラスです。具体的なアニメーションの仕方はPointObjectクラスを参照
     //またPointObjectGeneratorのインスタンスとの連携も担っています。
     [Header("インスペクター設定用")]
     public List<PointObject> TargetPointObjectList;
@@ -15,12 +15,15 @@ public class TimeKeeper : MonoBehaviour
     [SerializeField] float _perlinNoiseMagni = 1;
 
     [Header("表示用")]
-    public float ActivationDelay;
+    //PointObjectGeneraterにより設定される基準となる有効化の遅延時間
+    public float BaseActivationDelay;
     public TargetState CurrentTargetState = TargetState.Preparing;
     public TimingState CurrentTaimingState = TimingState.GoodTiming;
     [SerializeField]float _sumLifeTime;
     [SerializeField]float _sumNextActivationDelay;
     [SerializeField] int _nextGeneratableCount;
+    //BaseActivationDelayとPointObjectが持つoffsetActivationDelayにより最終的に決まる有効化の遅延時間
+    [SerializeField] float _activationDelay;
 
     public enum TargetState
     {
@@ -39,19 +42,25 @@ public class TimeKeeper : MonoBehaviour
         StartCoroutine(ManageLifeCycle());
         IEnumerator ManageLifeCycle()
         {
-            //ポイントオブジェクトの有効化までの時間可視化
-            AllAddLifeTimeGUI_Anim(ActivationDelay);
-            yield return new WaitForSeconds(ActivationDelay - _activateAnimRate * ActivationDelay);
+            AllInitializePointObject();
+            //対応するポイントオブジェクトの有効化に要する時間を計算
+            CalculateActivationDelay();
+            //対応するポイントオブジェクトの有効化までの時間可視化する関数を実行
+            AllPlayAddLifeTimeGUI(_activationDelay);
+            //ポイントオブジェクトの有効化時の出現アニメーションの所要時間を考慮して待機
+            yield return new WaitForSeconds(_activationDelay - _activateAnimRate *_activationDelay);
             CurrentTargetState = TargetState.Activating;
             CurrentTaimingState = TimingState.GoodTiming;
-            AllActivatePointObject();
-            AllPlayActivateAnim(_activateAnimRate * ActivationDelay);
-            yield return new WaitForSeconds(_activateAnimRate * ActivationDelay);
+            //ポイントオブジェクトの有効化処理と出現アニメーションの再生
+            AllActivateMain();
+            AllPlayActivateAnim(_activateAnimRate * _activationDelay);
+            //出現アニメーションの所要時間分待機
+            yield return new WaitForSeconds(_activateAnimRate * _activationDelay);
             CurrentTargetState = TargetState.ActivationCompleted;
             CurrentTaimingState = TimingState.PerfectTiming;
             AllAddPointObjectCost();
             NoticeGeneratableNextPointObject();
-            AllSubtractLifeTimeGUI_Anim(_sumLifeTime);
+            AllPlaySubtractLifeTimeGUI(_sumLifeTime);
             yield return new WaitForSeconds(_sumLifeTime * 0.5f);
             CurrentTaimingState = TimingState.GreatTiming;
             yield return new WaitForSeconds(_sumLifeTime * 0.25f);
@@ -64,15 +73,8 @@ public class TimeKeeper : MonoBehaviour
             yield return new WaitForSeconds(_deactivateAnimDuration);
             Destroy(gameObject);
         }
-
-        void AllAddLifeTimeGUI_Anim(float activationDelay){
-            foreach(PointObject targetPointObject in TargetPointObjectList){
-                if(targetPointObject == null) continue;
-                StartCoroutine(targetPointObject.AddLifeTimeGUI_Anim(ActivationDelay));
-            }
-        }
-        void AllActivatePointObject(){
-            _nextGeneratableCount =TargetPointObjectList[0].nextGeneratableCount;
+        void AllInitializePointObject(){
+            _nextGeneratableCount =TargetPointObjectList[0].NextGeneratableCount;
             foreach(PointObject targetPointObject in TargetPointObjectList){
                 if(targetPointObject == null) continue;
                 targetPointObject.TargetTimeKeeper = this;
@@ -82,6 +84,30 @@ public class TimeKeeper : MonoBehaviour
             }
 
         }
+
+        void CalculateActivationDelay()
+        {
+            _activationDelay = BaseActivationDelay;
+            foreach(PointObject targetPointObject in TargetPointObjectList){
+                _activationDelay += targetPointObject.OffsetActivationDelay;
+            }
+
+        }
+        void AllPlayAddLifeTimeGUI(float activationDelay){
+            foreach(PointObject targetPointObject in TargetPointObjectList){
+                if(targetPointObject == null) continue;
+                targetPointObject.PlayAddLifeTimeGUI(_activationDelay);
+            }
+        }
+        void AllActivateMain()
+        {
+            foreach(PointObject targetPointObject in TargetPointObjectList){
+                if(targetPointObject == null) continue;
+                targetPointObject.ActivateMain();
+            }
+
+        }
+        
         void AllPlayActivateAnim(float activateAnimDuration){
             foreach(PointObject targetPointObject in TargetPointObjectList){
                 if(targetPointObject == null) continue;
@@ -94,10 +120,10 @@ public class TimeKeeper : MonoBehaviour
                 PointObjectGenerater2.CurrentPointObjectGenerater2.AddSumPointObjectCost(targetPointObject.PointObjectCost);
             }
         }
-        void AllSubtractLifeTimeGUI_Anim(float sumLifeTime){
+        void AllPlaySubtractLifeTimeGUI(float sumLifeTime){
             foreach(PointObject targetPointObject in TargetPointObjectList){
                 if(targetPointObject == null) continue;
-                StartCoroutine(targetPointObject.SubtractLifeTimeGUI_Anim(sumLifeTime));
+                targetPointObject.PlaySubtractLifeTimeGUI(sumLifeTime);
             }
         }
         void AllDeactivatePointObject(){
@@ -123,6 +149,8 @@ public class TimeKeeper : MonoBehaviour
     {
         TargetPointObjectList.Remove(pointObject);
         pointObject.TargetIndicator2.Destroy();
+        //管理外から外れる為　対象のポイントオブジェクトとのリンクを切る。
+        pointObject.TargetTimeKeeper = null;
     }
 
 
