@@ -126,7 +126,7 @@ public class StageUI_manager : MonoBehaviour
         SoundManager.Current.PlayOneShot2D_SE(OneShot.downButton,0.7f);
         GameManager.Current.ReloadCurrentScene();
     }
-    public void GoBackTitle2Button()
+    public void GoBackTitleButton()
     {
         SoundManager.Current.PlayOneShot2D_SE(OneShot.downButton,0.7f);
         GameManager.Current.LoadTitle();

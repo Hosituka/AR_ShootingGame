@@ -645,7 +645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: GenerateHalfYawAngle
-      value: 0
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: difficultAsGenerater
@@ -653,7 +653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: GenerateHalfPitchAngle
-      value: 0
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: easyMaxPointObjectCost
@@ -686,11 +686,11 @@ PrefabInstance:
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: 'PointObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 7244927519231706546, guid: 0a4f0efe4a1ab834f8926f299be9b887, type: 3}
+      objectReference: {fileID: 725494169189451135, guid: a9878bdb5d005cb498811fbba1f1bc9e, type: 3}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: 'PointObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 7244927519231706546, guid: 0a4f0efe4a1ab834f8926f299be9b887, type: 3}
+      objectReference: {fileID: 1065227744581360278, guid: 2eb220bf8d4f9ae41bcdb4f06018e325, type: 3}
     - target: {fileID: 6034824532322469782, guid: 0b12bc70e2f86494d933d895ec29467a, type: 3}
       propertyPath: 'PointObjects.Array.data[2]'
       value: 
@@ -2324,38 +2324,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _frontSprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 451433358}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GoBackTitle2Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StageUI_manager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 223687478716306372, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 342550067691423269, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2592,10 +2560,6 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4082457474106528172, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4120397434679316672, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2818,50 +2782,6 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 37847f4230dae9e48907b8ce59e39117, type: 2}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _aimColor.b
-      value: 0.57232696
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _aimColor.g
-      value: 0.57232696
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _aimColor.r
-      value: 0.57232696
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _frontSprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 451433358}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RestartButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StageUI_manager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7469717108246704959, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
-      propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7605864204975760236, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
       propertyPath: _addScale
       value: 1
@@ -2956,7 +2876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8504804561339018034, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
       propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadStageButton
+      value: LoadStageShootableButton
       objectReference: {fileID: 0}
     - target: {fileID: 8504804561339018034, guid: aa38c4caf73da8d409e36990b0eda9ba, type: 3}
       propertyPath: _onShoot.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

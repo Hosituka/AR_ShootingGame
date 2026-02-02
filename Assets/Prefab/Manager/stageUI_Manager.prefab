@@ -17961,7 +17961,7 @@ GameObject:
   - component: {fileID: 9022205823816835779}
   - component: {fileID: 5479820222580986578}
   m_Layer: 0
-  m_Name: GoBackTitle2Button
+  m_Name: GoBackTitleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18071,7 +18071,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4504791940206654529}
         m_TargetAssemblyTypeName: StageUI_manager, Assembly-CSharp
-        m_MethodName: GoBackTitle2Button
+        m_MethodName: GoBackTitleButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19487,7 +19487,7 @@ GameObject:
   - component: {fileID: 223687478716306372}
   - component: {fileID: 566918345999182783}
   m_Layer: 0
-  m_Name: GoBackTitle2ShootableButton
+  m_Name: GoBackTitleShootableButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
