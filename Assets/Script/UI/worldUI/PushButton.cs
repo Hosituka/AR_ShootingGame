@@ -17,15 +17,13 @@ public class PushButton : MonoBehaviour,IPointerDownHandler,IPointerEnterHandler
     Vector3 _startPosition;
     static event Action<GameObject> _allCheckColliders;
     static int _downCount;
-    void Start()
-    {
-        _startColor = _frontSprite.color;
-        _startPosition = _buttonTr.localPosition;
-    }
     //ほかのボタンにより、この自作コンポーネントにアタッチされたゲームオブジェクトが有効化された時、リセットする処理
     void OnEnable()
     {
         _allCheckColliders += CheckColliders;
+        _startColor = _frontSprite.color;
+        _startPosition = _buttonTr.localPosition;
+
         SetUpState();
     }
     void OnDisable() {
