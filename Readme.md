@@ -20,37 +20,45 @@
 
 このプロジェクトは、AR Foundationのような高度なARフレームワークを使用せず、Unityの標準機能を用いてAR体験を実現しています。
 
--   **パススルーAR:** `WebCameraImage.cs` が `GameManager.cs` で管理される `WebCamTexture` を使用し、デバイスのカメラ映像を取得してUIの背景として常時表示します。
--   **3DoFコントロール:** `GameManager.cs` がUnityの `Input System` に含まれる `AttitudeSensor` からデバイスの回転情報を取得します。その情報を `CameraController.cs` がカメラの向きに反映させることで、プレイヤーの視点操作を実現しています。
+-   **初期セットアップ:** `AR_SetUpUI_Manager`によってWebカメラの使用許可、デバイスの縦向き確認、背面カメラの取得、および姿勢センサーの有効化が行われます。これにより、AR体験に必要なデバイスの状態が整えられます。
+-   **パススルーAR:** `GameManager`がシングルトンとして`WebCamTexture`を管理し、デバイスのカメラ映像を取得します。この映像がUIの背景として常時表示されることで、パススルーARを実現しています。
+-   **3DoFコントロール:** `GameManager`がUnityの`Input System`に含まれる`AttitudeSensor`からデバイスの回転情報（Quaternion）を継続的に取得します。プレイヤーオブジェクトにアタッチされた`AttitudeTransformController`が、`GameManager`からその回転情報を受け取り、カメラの向きに反映させることで、プレイヤーの視点操作を実現しています。
 
 ## プロジェクトのアーキテクチャ
 
 コンポーネントベースのアーキテクチャで構築されており、役割ごとにスクリプトが明確に分離されています。
 
 -   **Manager (`Assets/Script/Manager`):**
-    -   `GameManager.cs`: ゲーム全体の状態（難易度、`WebCamTexture`、`AttitudeSensor`の管理）、シーン遷移を担うシングルトン。
+    -   `AR_SetUpUI_Manager.cs`: アプリ起動時にWebカメラのパーミッション要求、デバイスの縦向き確認、背面カメラの取得、姿勢センサーの有効化を行い、AR体験に必要な初期セットアップを管理します。
+    -   `GameManager.cs`: ゲーム全体の状態（難易度設定、`WebCamTexture`、`AttitudeSensor`の管理）とシーン遷移を担うシングルトン。
     -   `StageManager.cs`: ステージの進行、スコア、制限時間などを管理。
     -   `SoundManager.cs`: 効果音やBGMの再生を管理。
-    -   `StageUI_manager.cs`, `Title1UI_Manager.cs`など: 各シーンのUIを管理。
+    -   `StageUI_manager.cs`, `TitleUI_Manager.cs`など: 各シーンのUIイベントや表示更新を管理。
+
 -   **Player (`Assets/Script/Player`):**
     -   `Player.cs`: 弾の発射、赤と青の銃の切り替え、照準合わせのロジックを管理。
-    -   `CameraController.cs`: `GameManager`から受け取った姿勢情報をもとに、カメラの回転を制御。
+    -   `AttitudeTransformController.cs`: `GameManager`から受け取ったデバイスの姿勢情報をもとに、アタッチされたオブジェクト（カメラ）の回転を制御します。
     -   `Bullet.cs`: 弾の振る舞いを定義。
+
 -   **PointObjects (`Assets/Script/PointObjects`):**
-    -   `PointObjectGenerator2.cs`: 難易度やコスト計算、Perlinノイズなどを用いて、ターゲットを動的に生成・配置するゲームプレイの中核。
-    -   `PointObject.cs`: 全てのターゲットの振る舞いを定義する抽象基底クラス。被弾処理や時間経過、消滅時のアニメーションなどを管理。
-    -   `RedTarget.cs`, `BlueTarget.cs`, `MoveRedTarget.cs`など: `PointObject`を継承した具体的なターゲットクラス群。
+    -   `PointObjectGenerator2.cs`: ゲームプレイの中核をなす、ターゲットの動的生成システム。以下の特徴を持つ。
+        -   **グリッドベースの配置:** プレイヤーの視界を仮想的なグリッドマップで管理し、ターゲットの重複を防ぎます。
+        -   **Perlinノイズ:** 次にターゲットが出現するグリッド座標をPerlinノイズを用いて探索することで、ランダムながらも自然なまとまりのある配置を実現します。
+        -   **コスト管理:** 各ターゲットプレハブに設定されたコストに基づき、シーン内の総コストが上限を超えないように生成を制御します。
+        -   **BPM連携:** 設定されたBPMに応じてターゲットの出現タイミングやアニメーションが調整される可能性を示唆するロジックが含まれています。
+    -   `PointObject.cs`: 全てのターゲットの振る舞いを定義する抽象基底クラス。被弾処理、スコア加算、時間経過による消滅、破棄時のアニメーションなどを一元管理します。
+    -   `RedTarget.cs`, `MoveBlueTarget.cs`, `RedBlueTarget.cs`など: `PointObject`を継承し、色や動き、破壊条件などが異なる多様なターゲットを実装した具象クラス群。
 
 ## 制作環境
 
 -   **Unity:** `6000.0.60f1`
 -   **主要なパッケージ:**
-    -   `com.unity.inputsystem`: プレイヤーの入力およびデバイスのセンサー情報取得に使用。
-    -   `com.unity.render-pipelines.universal`: レンダリングパイプラインとしてURPを使用。
+    -   `com.unity.inputsystem`: `1.14.2` - プレイヤーの入力およびデバイスのセンサー情報取得に使用。
+    -   `com.unity.render-pipelines.universal`: `17.0.4` - レンダリングパイプラインとしてURPを使用。
     -   `com.unityroom.client`: [unityroom](https://unityroom.com/) のランキング機能との連携に使用。
 
 ## セットアップと実行
 
 1.  Unity Editor `6000.0.60f1`以降でこのプロジェクトを開きます。
-2.  `Assets/Scenes/title1.unity` または `title2.unity` シーンを開きます。
-3.  再生ボタンを押してゲームを開始します。
+2.  `Assets/Scenes/AR_Setup.unity` シーンを開きます。このシーンは、AR体験に必要なWebカメラのパーミッション要求、デバイスの向きの確認、および姿勢センサーの有効化を行います。
+3.  再生ボタンを押してゲームを開始します。`AR_Setup`シーンでの初期設定が完了すると、自動的に`title`シーンへ遷移します。
