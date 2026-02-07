@@ -36,10 +36,6 @@ public class Player : MonoBehaviour
     IAimEnterHandler _currentBlueGunIAimEnterHandler;
     IAimExitHandler _previousRedGunIAimExitHandler;
     IAimExitHandler _previousBlueGunIAimExitHandler;
-    void Start()
-    {
-        PlayerGun.Initialize();
-    }
     // Update is called once per frame
     void Update()
     {

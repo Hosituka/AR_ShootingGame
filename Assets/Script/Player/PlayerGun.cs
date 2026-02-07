@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Audio;
-using Unity.VisualScripting;
+using System.Diagnostics;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -20,10 +21,23 @@ public class PlayerGun : MonoBehaviour
     [SerializeField]PlayerGun _partnerGun;
     RaycastHit _raycastHit;
     bool _isShot;
-    //これはplayerクラスのインスタンスにより呼ばれる。
-    public static void Initialize()
+    void Start()
     {
-        _playingShotAnim = 0;
+        switch(_playingShotAnim)
+        {
+        　　//前のシーンで銃の反動モーションが終わっているor再生されてすらないとき
+            case 0:
+            break;
+            case 1:
+        　　//前のシーンで片方の銃の反動モーションが終わっていない時
+            SubtractIntensityOfMaterial();
+            _playingShotAnim = 0;
+            break;
+            case 2://前のシーンで二つの銃の反動モーションが終わっていない時
+            SubtractIntensityOfMaterial();
+            _playingShotAnim = 0;
+            break;
+        }
     }
     /// <summary>
     //銃口の先に複合コライダーを持つゲームオブジェクトがある時、それを返す関数
@@ -67,16 +81,7 @@ public class PlayerGun : MonoBehaviour
         switch (_playingShotAnim)
         {
             case 1:
-                Color materialEmissionColor = _shellMaterialForAddIntensity.GetColor("_EmissionColor");
-                materialEmissionColor *= 1.2f;
-                _shellMaterialForAddIntensity.SetColor("_EmissionColor",materialEmissionColor);
-
-                foreach(Material material in _gunMaterialsForAddIntensity)
-                {
-                    materialEmissionColor = material.GetColor("_EmissionColor");
-                    materialEmissionColor *= 3f;
-                    material.SetColor("_EmissionColor",materialEmissionColor);
-                }
+                AddIntensityOfMaterial();
                 _frontLight.enabled = false;
                 SingleMuzzleFlashLight.enabled = true;
             break;
@@ -84,7 +89,20 @@ public class PlayerGun : MonoBehaviour
                 _partnerGun.SingleMuzzleFlashLight.enabled = false;
                 _dualMuzzleFlashLight.enabled = true;
             break;
-        }        
+        }
+        void AddIntensityOfMaterial()
+        {
+            Color materialEmissionColor = _shellMaterialForAddIntensity.GetColor("_EmissionColor");
+            materialEmissionColor *= 1.2f;
+            _shellMaterialForAddIntensity.SetColor("_EmissionColor",materialEmissionColor);
+
+            foreach(Material material in _gunMaterialsForAddIntensity)
+            {
+                materialEmissionColor = material.GetColor("_EmissionColor");
+                materialEmissionColor *= 3f;
+                material.SetColor("_EmissionColor",materialEmissionColor);
+            }
+        }    
     }
     //これはFireと言う名のAnimationClipにより呼ばれる関数です。
     public void OnOpenChamber()
@@ -103,20 +121,25 @@ public class PlayerGun : MonoBehaviour
                 _partnerGun.SingleMuzzleFlashLight.enabled = true;
             break;
             case 0:
-                Color materialEmissionColor = _shellMaterialForAddIntensity.GetColor("_EmissionColor");
-                materialEmissionColor /= 1.2f;
-                _shellMaterialForAddIntensity.SetColor("_EmissionColor",materialEmissionColor);
-
-                foreach(Material material in _gunMaterialsForAddIntensity)
-                {
-                    materialEmissionColor = material.GetColor("_EmissionColor");
-                    materialEmissionColor /= 3f;
-                    material.SetColor("_EmissionColor",materialEmissionColor);
-                }
-               SingleMuzzleFlashLight.enabled = false;
+                SubtractIntensityOfMaterial();
+                SingleMuzzleFlashLight.enabled = false;
                 _frontLight.enabled = true;
             break;
         }        
+
+    }
+    void SubtractIntensityOfMaterial()
+    {
+        Color materialEmissionColor = _shellMaterialForAddIntensity.GetColor("_EmissionColor");
+        materialEmissionColor /= 1.2f;
+        _shellMaterialForAddIntensity.SetColor("_EmissionColor",materialEmissionColor);
+
+        foreach(Material material in _gunMaterialsForAddIntensity)
+        {
+            materialEmissionColor = material.GetColor("_EmissionColor");
+            materialEmissionColor /= 3f;
+            material.SetColor("_EmissionColor",materialEmissionColor);
+        }
 
     }
 }
